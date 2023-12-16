@@ -3,9 +3,26 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    private static PlayerController _instance;
+
+    public static PlayerController Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                GameObject playerControllerObject = new GameObject("PlayerController");
+                _instance = playerControllerObject.AddComponent<PlayerController>();
+                DontDestroyOnLoad(playerControllerObject);
+            }
+            return _instance;
+        }
+    }
+
     private Rigidbody2D rb;
     private bool isGrounded = false;
     private bool canJump = true; // New variable to track jumping state
@@ -22,6 +39,9 @@ public class PlayerController : MonoBehaviour
     {
         return playerScore;
     }
+
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -115,6 +135,26 @@ public class PlayerController : MonoBehaviour
 
             // Allow jumping again when grounded
             canJump = true;
+        }
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet") || collision.gameObject.CompareTag("Triangle"))
+        {
+            Debug.Log("!!!!!!!!     PLAYER CONTACT      !!!!!!!");
+            SceneManager.LoadScene("GameOverMenu");
+        }
+        if (collision.gameObject.name == "Bullet" || collision.gameObject.name == "Triangle")
+        {
+            Debug.Log("!!!!!!!!     PLAYER CONTACT      !!!!!!!");
+            SceneManager.LoadScene("GameOverMenu");
+        }
+        if (collision.collider.CompareTag("Bullet") || collision.collider.CompareTag("Triangle"))
+        {
+            Debug.Log("!!!!!!!!     PLAYER CONTACT      !!!!!!!");
+            SceneManager.LoadScene("GameOverMenu");
         }
     }
 }
