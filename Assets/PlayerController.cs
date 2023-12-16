@@ -2,6 +2,7 @@ using Unity;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,14 +12,34 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 9f;
     private Vector3 originalScale;
 
+    //private bool isAlive = true;
+    private float playerScore;
+    private float scoreIncreaseFactor = 4f;
+
+    public TextMeshProUGUI tmpText;
+
+    public float GetPlayerScore()
+    {
+        return playerScore;
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        playerScore = 1;
         originalScale = transform.localScale;
+        tmpText = GameObject.Find("PlayerScoreUI")?.GetComponent<TextMeshProUGUI>();
     }
 
     void Update()
     {
+        playerScore += scoreIncreaseFactor * Time.deltaTime;
+        tmpText.text = "PlayerScore: " + Mathf.Round(playerScore);
+        Debug.Log("Score : " + playerScore);
+        //if (isAlive)
+        //{
+        //    playerScore += playerScore *  Time.deltaTime;
+        //}
+
         Debug.Log($"isGrounded: {isGrounded}");
         //int groundLayer = LayerMask.NameToLayer("Base");
 
@@ -73,7 +94,7 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        rb.gravityScale = 2;
+        rb.gravityScale = 4;
         isGrounded = false;
 
         // Set canJump to false to prevent multiple jumps until grounded again
