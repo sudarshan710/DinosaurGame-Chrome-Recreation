@@ -7,21 +7,21 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-    private static PlayerController _instance;
+    //private static PlayerController _instance;
 
-    public static PlayerController Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                GameObject playerControllerObject = new GameObject("PlayerController");
-                _instance = playerControllerObject.AddComponent<PlayerController>();
-                DontDestroyOnLoad(playerControllerObject);
-            }
-            return _instance;
-        }
-    }
+    //public static PlayerController Instance
+    //{
+    //    get
+    //    {
+    //        if (_instance == null)
+    //        {
+    //            GameObject playerControllerObject = new GameObject("PlayerController");
+    //            _instance = playerControllerObject.AddComponent<PlayerController>();
+    //            DontDestroyOnLoad(playerControllerObject);
+    //        }
+    //        return _instance;
+    //    }
+    //}
 
     private Rigidbody2D rb;
     private bool isGrounded = false;
@@ -53,7 +53,14 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         playerScore += scoreIncreaseFactor * Time.deltaTime;
-        tmpText.text = "PlayerScore: " + Mathf.Round(playerScore);
+        if (tmpText != null)
+        {
+            tmpText.text = "PlayerScore: " + Mathf.Round(playerScore);
+        }
+        else
+        {
+            Debug.LogError("TextMeshProUGUI not found!");
+        }
         Debug.Log("Score : " + playerScore);
         //if (isAlive)
         //{

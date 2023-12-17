@@ -28,8 +28,11 @@ public class GameMaster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        SavePlayerScore(controller.GetPlayerScore());   
+
         if (controller != null)
         {
+
             tmpText.text = "HighScore: " + Mathf.Round(highScore);
 
             if (controller.GetPlayerScore() > highScore)
@@ -37,5 +40,12 @@ public class GameMaster : MonoBehaviour
                 highScore = controller.GetPlayerScore();
             }
         }
+    }
+
+
+    public static void SavePlayerScore(float score)
+    {
+        PlayerPrefs.SetFloat("PlayerScore", score);
+        PlayerPrefs.Save(); // This line ensures the data is written immediately
     }
 }
